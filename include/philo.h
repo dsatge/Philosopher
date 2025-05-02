@@ -6,7 +6,7 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:35:32 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/01 19:43:48 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/02 17:55:35 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 	below or equal to 200\n"
 # define ERR_INIT_MUTEX "Error: pthread mutex init failed\n"
 
-struct	s_general t_general;
+typedef struct s_general t_general;
+// struct s_data;		
 
 typedef struct s_data
 {
@@ -47,21 +48,22 @@ typedef struct s_data
 	pthread_mutex_t		mutex_lastmeal;
 	pthread_mutex_t		mutex_stop;
 	pthread_mutex_t		mutex_countmeal;
-	pthread_mutex_t		*mutex_fork;
-	struct t_general	*general;
-	struct t_philp		*philo;
+	pthread_mutex_t		**mutex_fork;
+	t_general	*general;
+	struct t_philo		*philo;
 }	t_data;
 
 typedef struct s_philo
 {
 	int					id;
 	int					stop;
+	int					count_meal;
 	long long int		lastmeal;
 	pthread_t			thread;
 	pthread_mutex_t		*leftfork;
 	pthread_mutex_t		*rightfork;
 	t_data				*data;
-	struct t_general	*general;
+	t_general	*general;
 }	t_philo;
 
 typedef struct s_general
@@ -93,10 +95,10 @@ void			*stop_routine(t_philo *philo);
 int				feededphilo_check(t_general *general);
 int				philo_launch(t_general *general);
 //ROUTINE
-int				eat(t_philo *philo);
-int				sleep_f(t_philo *philo);
-int				think(t_philo *philo);
+void			eat(t_philo *philo, t_general *general);
+int				sleep_f(t_philo *philo, t_general *general);
+int				think(t_philo *philo, t_general *general);
 //SURVIVE
-void			starvation_death(t_philo *philo);
+void			starvation_death(t_philo *philo, t_general *general);
 void			*last_meal(void *v_general);
 #endif

@@ -6,7 +6,7 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:21:16 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/01 18:20:26 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/02 17:56:19 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 int	ft_exit(t_general *general, t_philo *philo, int dest_data, int dest_philo)
 {
-	pthread_mutex_lock(&general->data.mutex_stop);
-	if (general->data.stop == 0)
-		general->data.stop = 1;
-	pthread_mutex_unlock(&general->data.mutex_stop);
 	if (dest_data > 0)
 		ft_dell_mutexdata(general, dest_data);
 	if (dest_philo > 0)
-		ft_dell_forks(philo, dest_philo);
+		ft_dell_forks(philo->data, dest_philo);
 	if (general->philo)
 	{
 		free(general->philo);
 		general->philo = NULL;
+	}
+	if (general->data.mutex_fork)
+	{
+		free(general->data.mutex_fork);
+		general->data.mutex_fork = NULL;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -52,8 +53,7 @@ int	ft_dell_forks(t_data *data, int nbr)
 	i = 0;
 	while (i < nbr)
 	{
-		pthread_mutex_destroy(&data->mutex_fork[i]);
-		// pthread_join(philo[i].thread, NULL);
+		pthread_mutex_destroy(data->mutex_fork[i]);
 		i++;
 	}
 	return (0);

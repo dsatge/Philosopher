@@ -6,7 +6,7 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:23:19 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/01 19:53:11 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:35:59 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_usleep(long long int t_ms, t_general *general)
 void	printf_status(t_philo *philo, char *str)
 {
 	pthread_mutex_lock(&philo->data->mutex_stop);
-	if (philo->data->stop == 1 || feededphilo_check(philo->data->general) == 1)
+	if (philo->data->stop == 1 || feededphilo_check(philo->general) == 1)
 	{
 		pthread_mutex_unlock(&philo->data->mutex_stop);
 		return ;
@@ -81,10 +81,10 @@ int	wait_for_all(t_general *general)
 	over = 0;
 	while (i < general->data.philo_nbr)
 	{
-		pthread_mutex_lock(&general->philo[i].mutex_stop);
-		if (general->philo[i].stop == 1)
+		pthread_mutex_lock(&general->data.mutex_stop);
+		if (general->data.stop == 1)
 			over++;
-		pthread_mutex_unlock(&general->philo[i].mutex_stop);
+		pthread_mutex_unlock(&general->data.mutex_stop);
 		i++;
 	}
 	if (over == general->data.philo_nbr)
