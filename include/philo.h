@@ -6,7 +6,7 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:35:32 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/02 17:55:35 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/03 14:08:18 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 	below or equal to 200\n"
 # define ERR_INIT_MUTEX "Error: pthread mutex init failed\n"
 
-typedef struct s_general t_general;
+// typedef struct s_data t_data;
+typedef struct s_philo t_philo;
 // struct s_data;		
 
 typedef struct s_data
@@ -49,8 +50,8 @@ typedef struct s_data
 	pthread_mutex_t		mutex_stop;
 	pthread_mutex_t		mutex_countmeal;
 	pthread_mutex_t		**mutex_fork;
-	t_general	*general;
-	struct t_philo		*philo;
+	// t_data	*data;
+	t_philo		*philo;
 }	t_data;
 
 typedef struct s_philo
@@ -63,42 +64,42 @@ typedef struct s_philo
 	pthread_mutex_t		*leftfork;
 	pthread_mutex_t		*rightfork;
 	t_data				*data;
-	t_general	*general;
+	// t_data	*data;
 }	t_philo;
 
-typedef struct s_general
-{
-	t_data				data;
-	t_philo				*philo;
-}		t_general;
+// typedef struct s_data
+// {
+// 	t_data				data;
+// 	t_philo				*philo;
+// }		t_data;
 
 //UTILS
 void			ft_putstrfd(char *str, int fd);
 long long int	get_time_ms(void);
-void			ft_usleep(long long int t_ms, t_general *general);
+void			ft_usleep(long long int t_ms, t_data *data);
 void			printf_status(t_philo *philo, char *str);
-int				wait_for_all(t_general *general);
+int				wait_for_all(t_data *data);
 //PARSING
-int				check_parsing(t_general *general, int ac);
-int				check_data(t_general *general, int argc);
+int				check_parsing(t_data *data, int ac);
+int				check_data(t_data *data, int argc);
 int				convert_nbr(char *str);
 //STRUCT
-int				init(t_general *general, int argc, char **argv);
+int				init(t_data *data, int argc, char **argv);
 //EXIT
-int				ft_exit(t_general *general, t_philo *philo,
+int				ft_exit(t_data *data, t_philo *philo,
 					int dest_data, int dest_philo);
-int				ft_dell_mutexdata(t_general *general, int i);
+int				ft_dell_mutexdata(t_data *data, int i);
 int				ft_dell_forks(t_data *data, int i);
 //PHILO
 int				death_check(t_data *data);
 void			*stop_routine(t_philo *philo);
-int				feededphilo_check(t_general *general);
-int				philo_launch(t_general *general);
+int				feededphilo_check(t_data *data);
+int				philo_launch(t_data *data);
 //ROUTINE
-void			eat(t_philo *philo, t_general *general);
-int				sleep_f(t_philo *philo, t_general *general);
-int				think(t_philo *philo, t_general *general);
+void			eat(t_philo *philo, t_data *data);
+int				sleep_f(t_philo *philo, t_data *data);
+int				think(t_philo *philo, t_data *data);
 //SURVIVE
-void			starvation_death(t_philo *philo, t_general *general);
-void			*last_meal(void *v_general);
+void			starvation_death(t_philo *philo, t_data *data);
+void			*last_meal(void *v_data);
 #endif

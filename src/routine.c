@@ -6,13 +6,13 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:22:33 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/02 16:23:07 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/03 16:57:12 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	eat(t_philo *philo, t_general *general)
+void	eat(t_philo *philo, t_data *data)
 {
 	pthread_mutex_lock(philo->leftfork);
 	printf_status(philo, "has taken a fork\n");
@@ -32,26 +32,26 @@ void	eat(t_philo *philo, t_general *general)
 	if (philo->data->stop == 0)
 		philo->data->meals_count++;
 	pthread_mutex_unlock(&philo->data->mutex_eat);
-	ft_usleep(philo->data->time_to_eat, general);
+	ft_usleep(philo->data->time_to_eat, data);
 	pthread_mutex_unlock(philo->leftfork);
 	pthread_mutex_unlock(philo->rightfork);
 }
 
-int	sleep_f(t_philo *philo, t_general *general)
+int	sleep_f(t_philo *philo, t_data *data)
 {
 	if (death_check(philo->data) == 1)
 		return (stop_routine(philo), 0);
 	printf_status(philo, "is sleeping\n");
-	ft_usleep(philo->data->time_to_sleep, general);
+	ft_usleep(philo->data->time_to_sleep, data);
 	return (1);
 }
 
-int	think(t_philo *philo, t_general *general)
+int	think(t_philo *philo, t_data *data)
 {
 	if (death_check(philo->data) == 1)
 		return (stop_routine(philo), 0);
 	printf_status(philo, "is thinking\n");
 	if (philo->data->philo_nbr % 2 != 0)
-		ft_usleep(philo->data->time_to_eat / 10, general);
+		ft_usleep(philo->data->time_to_eat / 10, data);
 	return (1);
 }

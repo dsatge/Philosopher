@@ -6,7 +6,7 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:22:10 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/02 16:46:47 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/03 14:41:44 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,32 +59,32 @@ int	convert_nbr(char *str)
 	return ((int)nbr);
 }
 
-int	check_parsing(t_general *general, int ac)
+int	check_parsing(t_data *data, int ac)
 {
-	if (general->data.philo_nbr == -1
-		|| general->data.time_to_die == -1
-		|| general->data.time_to_eat == -1
-		|| general->data.time_to_sleep == -1)
+	if (data->philo_nbr == -1
+		|| data->time_to_die == -1
+		|| data->time_to_eat == -1
+		|| data->time_to_sleep == -1)
 		return (EXIT_FAILURE);
-	if (ac == 6 && general->data.meals_count == -1)
+	if (ac == 6 && data->meals_count == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	check_data(t_general *general, int ac)
+int	check_data(t_data *data, int ac)
 {
-	if (ac == 6 && (general->data.philo_nbr == 0
-			|| general->data.time_to_die == 0
-			|| general->data.time_to_eat == 0
-			|| general->data.time_to_sleep == 0
-			|| general->data.meals_count == 0))
+	if (ac == 6 && (data->philo_nbr == 0
+			|| data->time_to_die == 0
+			|| data->time_to_eat == 0
+			|| data->time_to_sleep == 0
+			|| data->meals_count == 0))
 		return (ft_putstrfd(ERR_PARS_ZERO, 2), EXIT_FAILURE);
-	if (ac == 5 && (general->data.philo_nbr == 0
-			|| general->data.time_to_die == 0
-			|| general->data.time_to_eat == 0
-			|| general->data.time_to_sleep == 0))
+	if (ac == 5 && (data->philo_nbr == 0
+			|| data->time_to_die == 0
+			|| data->time_to_eat == 0
+			|| data->time_to_sleep == 0))
 		return (ft_putstrfd(ERR_PARS_ZERO, 2), EXIT_FAILURE);
-	if (general->data.philo_nbr > 200)
+	if (data->philo_nbr > 200)
 		return (ft_putstrfd(ERR_PARS_UP200, 2), EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
