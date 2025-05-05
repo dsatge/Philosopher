@@ -6,7 +6,7 @@
 #    By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/29 16:36:50 by dsatge            #+#    #+#              #
-#    Updated: 2025/04/29 16:36:51 by dsatge           ###   ########.fr        #
+#    Updated: 2025/05/05 15:03:52 by dsatge           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ C_FILES = main.c\
 			routine.c\
 			survive.c\
 			parsing.c\
+			utils_struct.c\
 
 SRCS = $(addprefix src/,$(C_FILES))
 

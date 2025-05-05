@@ -6,21 +6,11 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:22:20 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/03 17:38:31 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/05 15:06:37 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
-void	*stop_routine(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->data->mutex_stop);
-	philo->data->stop = 1;
-	pthread_mutex_unlock(&philo->data->mutex_stop);
-	// pthread_mutex_lock(&philo->data->mutex_msg);
-	// pthread_mutex_unlock(&philo->data->mutex_msg);	
-	return (NULL);
-}
 
 int	death_check(t_data *data)
 {
@@ -41,23 +31,23 @@ int	feededphilo_check(t_data *data)
 
 	i = 0;
 	feed_status = 0;
+	pthread_mutex_lock(&data->mutex_countmeal);
 	if (data->meals_count == 0)
+	{
+		pthread_mutex_unlock(&data->mutex_countmeal);
 		return (0);
+	}
+	pthread_mutex_unlock(&data->mutex_countmeal);
 	while (i < data->philo_nbr)
 	{
-		pthread_mutex_lock(&data->mutex_eat);
+		pthread_mutex_lock(&data->mutex_countmeal);
 		if (data->philo[i].count_meal >= data->meals_count)
 			feed_status++;
-		pthread_mutex_unlock(&data->mutex_eat);
+		pthread_mutex_unlock(&data->mutex_countmeal);
 		i++;
 	}
 	if (feed_status >= data->philo_nbr)
-	{
-		pthread_mutex_lock(&data->mutex_stop);
-		data->stop = 1;
-		pthread_mutex_unlock(&data->mutex_stop);
-		return (1);
-	}
+		return (stop_routine(data->philo), 1);
 	return (0);
 }
 
@@ -69,6 +59,11 @@ void	*philo_routine(void *v_philo)
 	pthread_mutex_lock(&philo->data->mutex_lastmeal);
 	philo->lastmeal = philo->data->start_time;
 	pthread_mutex_unlock(&philo->data->mutex_lastmeal);
+	if (philo->data->philo_nbr == 1)
+	{
+		ft_usleep(philo->data->time_to_die + 10, philo->data);
+		return (stop_routine(philo));
+	}
 	if (philo->id % 2 == 0)
 		ft_usleep(philo->data->time_to_eat / 10, philo->data);
 	while (death_check(philo->data) == 0)
@@ -91,7 +86,7 @@ int	philo_launch(t_data *data)
 		data->philo[i].lastmeal = data->start_time;
 		if (pthread_create(&data->philo[i].thread,
 				NULL, &philo_routine, &data->philo[i]) != 0)
-			return (ft_exit(data, data->philo, 5, i));
+			return (ft_exit(data, data->philo, 4, i));
 		i++;
 	}
 	pthread_create(&data->thread_death, NULL, &last_meal, data);
@@ -102,8 +97,7 @@ int	philo_launch(t_data *data)
 			return (1);
 		i++;
 	}
-	if (pthread_detach(data->thread_death))
+	if (pthread_join(data->thread_death, NULL))
 		return (1);
-	ft_exit(data, data->philo, 5, data->philo_nbr);
 	return (0);
 }

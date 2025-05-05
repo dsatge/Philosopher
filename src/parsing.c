@@ -6,7 +6,7 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:22:10 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/03 14:41:44 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/05 14:34:29 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	check_data(t_data *data, int ac)
 			|| data->time_to_die == 0
 			|| data->time_to_eat == 0
 			|| data->time_to_sleep == 0
-			|| data->meals_count == 0))
+			|| data->meals_limit == 0))
 		return (ft_putstrfd(ERR_PARS_ZERO, 2), EXIT_FAILURE);
 	if (ac == 5 && (data->philo_nbr == 0
 			|| data->time_to_die == 0

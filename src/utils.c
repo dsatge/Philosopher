@@ -6,7 +6,7 @@
 /*   By: dsatge <dsatge@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:23:19 by dsatge            #+#    #+#             */
-/*   Updated: 2025/05/03 14:40:06 by dsatge           ###   ########.fr       */
+/*   Updated: 2025/05/05 15:14:32 by dsatge           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,4 @@ void	printf_status(t_philo *philo, char *str)
 	printf("%09lld %i %s", (get_time_ms() - philo->data->start_time),
 		philo->id, str);
 	pthread_mutex_unlock(&philo->data->mutex_msg);
-}
-
-int	wait_for_all(t_data *data)
-{
-	int	i;
-	int	over;
-
-	i = 0;
-	over = 0;
-	while (i < data->philo_nbr)
-	{
-		pthread_mutex_lock(&data->mutex_stop);
-		if (data->stop == 1)
-			over++;
-		pthread_mutex_unlock(&data->mutex_stop);
-		i++;
-	}
-	if (over == data->philo_nbr)
-		return (0);
-	return (1);
 }
